@@ -1,6 +1,6 @@
 // @flow
 
-import { createRouter as createContentsRouter } from "./contents";
-import { createRouter as createFilesRouter } from "./files";
+import { createContentsHandler } from "./contents";
+import { createFilesHandler } from "./files";
 
-export { createContentsRouter, createFilesRouter };
+export { createContentsHandler, createFilesHandler };

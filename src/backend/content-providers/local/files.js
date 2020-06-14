@@ -14,19 +14,19 @@ type ErrorResponse = {
   message: string
 };
 
-export function createRouter(options: DiskProviderOptions) {
+function createFilesHandler(options: DiskProviderOptions) {
   if (!options.local.baseDirectory) {
     throw new Error("Base directory must be specified for the local provider");
   }
 
-  const router = express.Router();
-
-  router.get("/*", (req: $Request, res: $Response) => {
-    const unsafeFilePath = req.params["0"];
+  const handler = (req, res) => {
+    const {
+      query: { path },
+    } = req;
 
     const filePath = path.join(
       options.local.baseDirectory,
-      sanitizeFilePath(unsafeFilePath)
+      sanitizeFilePath(path)
     );
 
     // Assume it's a file by default, fall to error handling otherwise
@@ -47,6 +47,8 @@ export function createRouter(options: DiskProviderOptions) {
     });
 
     rs.pipe(res);
-  });
-  return router;
+  };
+  return handler;
 }
+
+export { createFilesHandler };
